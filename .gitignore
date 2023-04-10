@@ -1,0 +1,8 @@
+# Directories
+bin/
+obj/
+.vscode/
+
+# Files
+build.cbuild
+src/main.c
