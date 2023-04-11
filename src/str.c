@@ -18,6 +18,7 @@ string __string_create(){
 
     str->cap = 1;
     str->len = 0;
+    str->data[0] = '\0';
 
     return (string)(&str->data);
 }
@@ -92,6 +93,11 @@ size_t __string_capacity(string _str){
     return __string_struct(_str)->cap;
 }
 
+int __string_empty(string _str){
+    if(_str == NULL) return 0;
+    return (__string_struct(_str)->len == 0);
+}
+
 int __string_inc(string* _str, size_t _count){
     if(_str == NULL || _count == 0) return 0;
     if((*_str) == NULL) return 0;
@@ -114,6 +120,26 @@ int __string_inc(string* _str, size_t _count){
     }
 
     str->len = new_len;
+
+    return 1;
+}
+
+char __string_get(string _str, size_t _index){
+    if(_str == NULL) return '\0';
+
+    __string* str = __string_struct(_str);
+    if(_index >= str->len) return '\0';
+
+    return _str[_index];
+}
+
+int __string_set(string _str, size_t _index, char _chr){
+    if(_str == NULL || _chr == '\0') return 0;
+
+    __string* str = __string_struct(_str);
+    if(_index >= str->len) return 0;
+
+    _str[_index] = _chr;
 
     return 1;
 }
@@ -208,11 +234,11 @@ int __string_delete(string* _str, size_t _index, size_t _num_chars){
 
     size_t new_len = str->len - _num_chars;
     size_t old_cap = str->cap;
-    size_t new_cap = 0;
+    size_t new_cap = old_cap;
     if(!__string_calc_capacity(&new_cap, new_len + 1)) return 0; //Overflow.
 
     if(_index + _num_chars - 1 < str->len - 1){
-        //memmove(_str + _index - 1, _str + _index + _num_chars - 1, str->len - (_index + _num_chars));
+        memmove(str->data + _index, str->data + _index + _num_chars, str->len - (_index + _num_chars));
     }
 
     if(old_cap != new_cap){
@@ -227,6 +253,123 @@ int __string_delete(string* _str, size_t _index, size_t _num_chars){
     str->cap = new_cap;
 
     str->data[new_len] = '\0';
+
+    return 1;
+}
+
+int __string_clear(string* _str){
+    if(_str == NULL) return 0;
+    if((*_str) == NULL) return 0;
+
+    __string* str = __string_struct(*_str);
+
+    if(str->cap <= 1) return 1;
+
+    __string* new_str = __string_realloc(str, 1);
+    if(new_str == NULL) return 0;
+
+    new_str->len = 0;
+    new_str->cap = 1;
+    new_str->data[0] = '\0';
+
+    *_str = (string)(&new_str->data);
+
+    return 1;
+}
+
+int __string_reverse(string _str){
+    if(_str == NULL) return 0;
+    __string* str = __string_struct(_str);
+
+    size_t middle = (str->len / 2) + ((str->len & 0x1) == 1);
+    char temp;
+    for(size_t i = 0; i < middle; ++i){
+        temp = str->data[i];
+        str->data[i] = str->data[str->len - i - 1];
+        str->data[str->len - i - 1] = temp;
+    }
+
+    return 1;
+
+}
+
+int __string_fill(string _str, char _chr){
+    if(_str == NULL || _chr == '\0') return 0;
+
+    __string* str = __string_struct(_str);
+    for(size_t i = 0; i < str->len; ++i) _str[i] = _chr;
+
+    return 1;
+}
+
+int __string_fill_range(string _str, size_t _index, size_t _num_chars, char _chr){
+    if(_str == NULL || _chr == '\0') return 0;
+
+    __string* str = __string_struct(_str);
+    for(size_t i = _index; i < _index + _num_chars; ++i){
+        _str[i] = _chr;
+        if(i >= str->len - 1) break;
+    }
+
+    return 1;
+}
+
+int __string_resize(string* _str, size_t _num_chars){
+    if(_str == NULL) return 0;
+    if((*_str) == NULL) return 0;
+
+    __string* str = __string_struct(*_str);
+
+    if(str->len == _num_chars) return 1;
+
+    size_t new_cap = 0;
+    if(!__string_calc_capacity(&new_cap, _num_chars + 1)) return 0; //Overflow.
+
+    if(new_cap != str->cap){
+        __string* new_str = __string_realloc(str, new_cap);
+        if(new_str == NULL) return 0;
+
+        str = new_str;
+        *_str = (string)(&str->data);
+    }
+
+    str->cap = new_cap;
+    str->len = _num_chars;
+    str->data[_num_chars] = '\0';
+
+    return 1;
+}
+
+int __string_reserve(string* _str, size_t _num_chars){
+    if(_str == NULL) return 0;
+    if((*_str) == NULL) return 0;
+
+    __string* str = __string_struct(*_str);
+
+    if(str->cap >= _num_chars + 1) return 1;
+
+    __string* new_str = __string_realloc(str, _num_chars + 1);
+    if(new_str == NULL) return 0;
+
+    new_str->cap = _num_chars + 1;
+    *_str = (string)(&new_str->data);
+
+    return 1;
+}
+
+int __string_shrink(string* _str){
+    if(_str == NULL) return 0;
+    if((*_str) == NULL) return 0;
+
+    __string* str = __string_struct(*_str);
+
+    if(str->cap == str->len + 1) return 1;
+
+    __string* new_str = __string_realloc(str, str->len + 1);
+    if(new_str == NULL) return 0;
+
+    new_str->cap = new_str->len + 1;
+    *_str = (string)(&new_str->data);
 
     return 1;
 }
