@@ -22,11 +22,6 @@ typedef struct __string {
 
 //@TODO: Replace
 //@TODO: Replace all
-//@TODO: Substr
-//@TODO: Find
-//@TODO: Find from
-//@TODO: Find all
-//@TODO: Compare
 
 string __string_create();
 string __string_create_from_string(string _str);
@@ -37,6 +32,7 @@ int __string_calc_capacity(size_t* _cap, size_t _dest);
 size_t __string_length(string _str);
 size_t __string_capacity(string _str);
 int __string_empty(string _str);
+int __string_compare(string str1, string str2);
 int __string_inc(string* _str, size_t _count);
 char __string_get(string _str, size_t _index);
 int __string_set(string _str, size_t _index, char _chr);
@@ -49,6 +45,12 @@ int __string_clear(string* _str);
 int __string_reverse(string _str);
 int __string_fill(string _str, char _chr);
 int __string_fill_range(string _str, size_t _index, size_t _num_chars, char _chr);
+string __string_substr(string _str, size_t _index, size_t _num_chars);
+string __string_clone(string _str);
+int __string_find_from(string _str, char* _substr, size_t _index);
+int __string_find_char_from(string _str, char _chr, size_t _index);
+size_t __string_count(string _str, char* _substr);
+size_t __string_count_char(string _str, char _chr);
 int __string_resize(string* _str, size_t _num_chars);
 int __string_reserve(string* _str, size_t _num_chars);
 int __string_shrink(string* _str);
@@ -57,9 +59,10 @@ int __string_shrink(string* _str);
 #define str_create_from_str(str) __string_create_from_string(str)
 #define str_free(str) __string_free(str)
 #define str_length(str) __string_length(str)
+#define str_size(str) __string_length(str)
 #define str_capacity(str) __string_capacity(str)
 #define str_empty(str) __string_empty(str)
-#define str_size(str) __string_length(str)
+#define str_compare(str1, str2) __string_compare(str1, str2)
 #define str_get(str, index) __string_get(str, index)
 #define str_set(str, index, chr) __string_set(str, index, chr)
 #define str_add(dst, src) __string_add(&dst, src)
@@ -71,6 +74,14 @@ int __string_shrink(string* _str);
 #define str_reverse(str) __string_reverse(str)
 #define str_fill(str, chr) __string_fill(str, chr)
 #define str_fill_range(str, index, num_chars, chr) __string_fill_range(str, index, num_chars, chr)
+#define str_substr(str, index, num_chars) __string_substr(str, index, num_chars)
+#define str_clone(str) __string_clone(str)
+#define str_find(str, substr) __string_find_from(str, substr, 0)
+#define str_find_char(str, chr) __string_find_char_from(str, chr, 0)
+#define str_find_from(str, substr, index) __string_find_from(str, substr, index)
+#define str_find_char_from(str, chr, index) __string_find_char_from(str, chr, index)
+#define str_count(str, substr) __string_count(str, substr)
+#define str_count_char(str, chr) __string_count_char(str, chr)
 #define str_resize(str, num_chars) __string_resize(&str, num_chars)
 #define str_reserve(str, num_chars) __string_reserve(&str, num_chars)
 #define str_shrink(str) __string_shrink(&str)

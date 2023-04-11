@@ -98,6 +98,11 @@ int __string_empty(string _str){
     return (__string_struct(_str)->len == 0);
 }
 
+int __string_compare(string str1, string str2){
+    if(str1 == NULL || str2 == NULL) return 0;
+    return (strcmp(str1, str2) == 0);
+}
+
 int __string_inc(string* _str, size_t _count){
     if(_str == NULL || _count == 0) return 0;
     if((*_str) == NULL) return 0;
@@ -312,6 +317,102 @@ int __string_fill_range(string _str, size_t _index, size_t _num_chars, char _chr
     }
 
     return 1;
+}
+
+string __string_substr(string _str, size_t _index, size_t _num_chars){
+    if(_str == NULL || _num_chars == 0) return NULL;
+
+    __string* str = __string_struct(_str);
+    if(_index >= str->len) return NULL;
+
+    if(str->len - _index < _num_chars) _num_chars = (str->len - _index);
+
+    __string* substr = (__string*)malloc(sizeof(__string) + _num_chars + 1);
+    if(substr == NULL) return NULL;
+
+    substr->cap = _num_chars + 1;
+    substr->len = _num_chars;
+
+    for(size_t i = 0; i < _num_chars; ++i) substr->data[i] = _str[i + _index];
+    substr->data[_num_chars] = '\0';
+
+    return (string)(&substr->data);
+}
+
+string __string_clone(string _str){
+    if(_str == NULL) return NULL;
+
+    __string* str = __string_struct(_str);
+    __string* new_str = (__string*)malloc(sizeof(__string) + str->cap);
+    if(new_str == NULL) return NULL;
+
+    new_str->cap = str->cap;
+    new_str->len = str->len;
+
+    for(size_t i = 0; i < new_str->len + 1; ++i) new_str->data[i] = _str[i];
+
+    return (string)(&new_str->data);
+}
+
+int __string_find_from(string _str, char* _substr, size_t _index){
+    if(_str == NULL || _substr == NULL) return -1;
+
+    __string* str = __string_struct(_str);
+    size_t sub_len = strlen(_substr);
+
+    if(sub_len == 0 || _index >= str->len) return -1;
+
+    for(size_t i = _index; i < str->len; ++i){
+        for(size_t j = 0; j < sub_len; ++j){
+            if(_str[i + j] != _substr[j]) break;
+            if(j == sub_len - 1) return i;
+        }
+    }
+
+    return -1;
+}
+
+int __string_find_char_from(string _str, char _chr, size_t _index){
+    if(_str == NULL || _chr == '\0') return -1;
+
+    __string* str = __string_struct(_str);
+    for(size_t i = _index; i < str->len; ++i){
+        if(_str[i] == _chr) return i;
+    }
+
+    return -1;
+}
+
+size_t __string_count(string _str, char* _substr){
+    if(_str == NULL || _substr == NULL) return 0;
+
+    __string* str = __string_struct(_str);
+    size_t sub_len = strlen(_substr);
+
+    if(sub_len == 0) return 0;
+
+    size_t count = 0;
+
+    for(size_t i = 0; i < str->len; ++i){
+        for(size_t j = 0; j < sub_len; ++j){
+            if(_str[i + j] != _substr[j]) break;
+            if(j == sub_len - 1) ++count;
+        }
+    }
+
+    return count;
+}
+
+size_t __string_count_char(string _str, char _chr){
+    if(_str == NULL || _chr == '\0') return 0;
+    __string* str = __string_struct(_str);
+
+    size_t count = 0;
+    for(size_t i = 0; i < str->len; ++i){
+        if(_str[i] == _chr) ++count;
+    }
+
+    return count;
 }
 
 int __string_resize(string* _str, size_t _num_chars){
