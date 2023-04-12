@@ -47,17 +47,17 @@ str_insert_char(str, 0, 'H'); // Inserts the character 'H' at index 0 of the str
 
 Substrings:
 ```c
-string substr = str_substr(str, 4, 8); // Copies 8 characters starting at index 4 and returns a new string.
+string substr = str_substr(str, 4, 8); // Copies 8 characters starting at index 4 and returns it as a new string.
 
 int pos1 = str_find(str, "Hello"); // Finds the first occurrence of "Hello" and returns its position. Returns -1 if no are found.
 int pos2 = str_find_from(str, "World", 5); // Finds the first occurrence of "World", starting from index 5, and returns its position. Returns -1 if no are found.
 
 // Similar functions for individual characters also exist:
-str_find_char(str, 'H'); // Finds the first occurrence character 'H'. Returns -1 if no are found.
+str_find_char(str, 'H'); // Finds the first occurrence of 'H'. Returns -1 if no are found.
 str_find_char_from(str, 'W', 5); // Finds the first occurrence of 'W' starting from index 5. Returns -1 if no are found.
 
 str_replace_first(str, "Hello", "Hey"); // Replaces the first occurrence of "Hello" with "Hey".
-str_replace_all(str, "Hello", "Hey"); // Replaces the all occurrences of "Hello" with "Hey".
+str_replace_all(str, "Hello", "Hey"); // Replaces all occurrences of "Hello" with "Hey".
 
 size_t count1 = str_count(str, "World"); // Returns the total number times "World" appears in the string.
 size_t count2 = str_count_char(str, 'A'); // Returns the total number of times the character 'A' appears in the string.
@@ -66,7 +66,7 @@ size_t count2 = str_count_char(str, 'A'); // Returns the total number of times t
 
 Resizing strings:
 ```c
-str_resive(str, 8); // Resizes the string to be 8 characters long. If expanded, any new memory will be uninitialized.
+str_resize(str, 8); // Resizes the string to be 8 characters long. If expanded, any new memory will be uninitialized.
 str_reserve(str, 16); // Reserves enough memory to contain at least 16 characters + the null terminator. Length will stay the same.
 str_shrink(str) // Shrinks the string's capacity to its length + the null terminator.
 ```
@@ -80,7 +80,15 @@ str_fill_range(str, 8, 4, 'B'); // Fills 4 characters of the string with the cha
 Other functions:
 ```c
 str_reverse(str); // Reverses the characters in the given string.
+
 string clone = str_clone(str); // Clones the given string and returns a pointer to it.
+
+size_t len = str_length(str); // Returns the length of the string, excluding the null terminator.
+size_t len = str_size(str); // Same as str_length.
+size_t cap = str_capacity(str); // Returns the allocated capacity of the string.
+
+int is_empty = str_empty(str); // Returns whether the string is empty or not.
+int is_equal = str_compare(str1, str2); // Returns whether the contents of the two strings are equal or not.
 ```
 
 ## Function List
