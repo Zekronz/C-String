@@ -1,12 +1,11 @@
 /*
 
-    string.c
+    str.c
     Copyright (c) 2023 Zekronz - MIT License
 
 */
 
 #include <stdlib.h>
-#include <stdio.h> //@TODO: Remove this.
 #include <string.h>
 #include "str.h"
 
@@ -62,7 +61,7 @@ __string* __string_realloc(__string* _str, size_t _data_size){
 
 int __string_calc_capacity(size_t* _cap, size_t _dest){
     (*_cap) = 0;
-    if(_dest == 0){ printf("Capacity %u\n", 1);return 1; }//@TODO: Remove this.
+    if(_dest == 0) return 1;
 
     size_t new_cap = 1;
     size_t prev_cap;
@@ -79,7 +78,6 @@ int __string_calc_capacity(size_t* _cap, size_t _dest){
     if(new_cap < _dest) return 0; //Overflow.
 
     (*_cap) = new_cap;
-    printf("Capacity %I64u\n", new_cap); //@TODO: Remove this.
     return 1;
 }
 
@@ -361,7 +359,7 @@ int __string_find_from(string _str, char* _substr, size_t _index){
     size_t sub_len = strlen(_substr);
 
     if(sub_len == 0 || _index >= str->len) return -1;
-
+    
     for(size_t i = _index; i < str->len; ++i){
         for(size_t j = 0; j < sub_len; ++j){
             if(_str[i + j] != _substr[j]) break;
@@ -381,6 +379,60 @@ int __string_find_char_from(string _str, char _chr, size_t _index){
     }
 
     return -1;
+}
+
+int __string_replace(string* _str, char* _substr, char* _new_substr, int _first){
+    if(_str == NULL || _substr == NULL) return 0;
+    if((*_str) == NULL || (*_substr) == '\0') return 0;
+
+    size_t sub_len = strlen(_substr);
+    size_t new_sub_len = _new_substr == NULL ? 0 : strlen(_new_substr);
+
+    size_t count = __string_count(*_str, _substr);
+    if(count == 0) return 1;
+
+    if(_first) count = 1;
+
+    __string* str = __string_struct(*_str);
+
+    size_t old_len = str->len;
+    size_t new_len = old_len - (count * sub_len) + (count * new_sub_len);
+
+    if(new_len > str->len){
+        __string* new_str = __string_realloc(str, new_len + 1);
+        if(new_str == NULL) return 0;
+
+        str = new_str;
+        str->cap = new_len + 1;
+    }
+
+    str->len = str->len;
+
+    size_t offset = 0;
+    size_t index;
+    int pos;
+    while((pos = __string_find_from(str->data, _substr, offset)) >= 0){
+        index = (size_t)pos;
+        memmove(str->data + index + new_sub_len, str->data + index + sub_len, str->len - (index + sub_len) + 1);
+        str->len = str->len - sub_len + new_sub_len;
+
+        for(size_t i = 0; i < new_sub_len; ++i) str->data[index + i] = _new_substr[i];
+
+        offset = index + new_sub_len;
+        if(_first) break;
+    }
+
+    if(str->len < old_len){
+        __string* new_str = __string_realloc(str, new_len + 1);
+        if(new_str == NULL) return 0;
+
+        str = new_str;
+        str->cap = new_len + 1;
+    }
+
+    *_str = (string)(&str->data);
+
+    return 1;
 }
 
 size_t __string_count(string _str, char* _substr){

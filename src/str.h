@@ -1,6 +1,6 @@
 /*
 
-    string.h
+    str.h
     Copyright (c) 2023 Zekronz - MIT License
 
 */
@@ -19,9 +19,6 @@ typedef struct __string {
     size_t len;
     char data[];
 } __string;
-
-//@TODO: Replace
-//@TODO: Replace all
 
 string __string_create();
 string __string_create_from_string(string _str);
@@ -49,6 +46,7 @@ string __string_substr(string _str, size_t _index, size_t _num_chars);
 string __string_clone(string _str);
 int __string_find_from(string _str, char* _substr, size_t _index);
 int __string_find_char_from(string _str, char _chr, size_t _index);
+int __string_replace(string* _str, char* _substr, char* _new_substr, int _first);
 size_t __string_count(string _str, char* _substr);
 size_t __string_count_char(string _str, char _chr);
 int __string_resize(string* _str, size_t _num_chars);
@@ -80,6 +78,8 @@ int __string_shrink(string* _str);
 #define str_find_char(str, chr) __string_find_char_from(str, chr, 0)
 #define str_find_from(str, substr, index) __string_find_from(str, substr, index)
 #define str_find_char_from(str, chr, index) __string_find_char_from(str, chr, index)
+#define str_replace_all(str, substr, new_substr) __string_replace(&str, substr, new_substr, 0)
+#define str_replace_first(str, substr, new_substr) __string_replace(&str, substr, new_substr, 1)
 #define str_count(str, substr) __string_count(str, substr)
 #define str_count_char(str, chr) __string_count_char(str, chr)
 #define str_resize(str, num_chars) __string_resize(&str, num_chars)
