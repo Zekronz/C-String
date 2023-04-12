@@ -38,7 +38,7 @@ str_insert(str, 4, "Hello"); // Inserts "Hello" at index 4 of the string.
 str_delete(str, 4, 5); // Removes 5 characters from the string, starting from index 4.
 str_clear(str); // Clears the entire string and sets its length to 0.
 
-// There are also similar functions for adding individual characters.
+// There are also similar functions for adding individual characters:
 str_add_char(str, 'I'); // Appends the character 'I' to the end of the string.
 str_insert_char(str, 0, 'H'); // Inserts the character 'H' at index 0 of the string.
 
@@ -47,6 +47,20 @@ str_insert_char(str, 0, 'H'); // Inserts the character 'H' at index 0 of the str
 
 Substrings:
 ```c
+string substr = str_substr(str, 4, 8); // Copies 8 characters starting at index 4 and returns a new string.
+
+int pos1 = str_find(str, "Hello"); // Finds the first occurrence of "Hello" and returns its position. Returns -1 if no are found.
+int pos2 = str_find_from(str, "World", 5); // Finds the first occurrence of "World", starting from index 5, and returns its position. Returns -1 if no are found.
+
+// Similar functions for individual characters also exist:
+str_find_char(str, 'H'); // Finds the first occurrence character 'H'. Returns -1 if no are found.
+str_find_char_from(str, 'W', 5); // Finds the first occurrence of 'W' starting from index 5. Returns -1 if no are found.
+
+str_replace_first(str, "Hello", "Hey"); // Replaces the first occurrence of "Hello" with "Hey".
+str_replace_all(str, "Hello", "Hey"); // Replaces the all occurrences of "Hello" with "Hey".
+
+size_t count1 = str_count(str, "World"); // Returns the total number times "World" appears in the string.
+size_t count2 = str_count_char(str, 'A'); // Returns the total number of times the character 'A' appears in the string.
 
 ```
 
@@ -65,6 +79,8 @@ str_fill_range(str, 8, 4, 'B'); // Fills 4 characters of the string with the cha
 
 Other functions:
 ```c
+str_reverse(str); // Reverses the characters in the given string.
+string clone = str_clone(str); // Clones the given string and returns a pointer to it.
 ```
 
 ## Function List
@@ -88,8 +104,8 @@ str_clear(str);
 str_reverse(str);
 str_fill(str, chr);
 str_fill_range(str, index, num_chars, chr);
-str_substr(str, index, num_chars);
 str_clone(str);
+str_substr(str, index, num_chars);
 str_find(str, substr);
 str_find_char(str, chr);
 str_find_from(str, substr, index);
