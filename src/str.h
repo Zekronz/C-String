@@ -2,11 +2,13 @@
 
     str.h
     Copyright (c) 2023 Zekronz - MIT License
+    
+    https://github.com/Zekronz/C-String
 
 */
 
-#ifndef __STRING_H
-#define __STRING_H
+#ifndef __ZEKRONZ_STRING_H
+#define __ZEKRONZ_STRING_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -72,8 +74,8 @@ int __string_shrink(string* _str);
 #define str_reverse(str) __string_reverse(str)
 #define str_fill(str, chr) __string_fill(str, chr)
 #define str_fill_range(str, index, num_chars, chr) __string_fill_range(str, index, num_chars, chr)
-#define str_substr(str, index, num_chars) __string_substr(str, index, num_chars)
 #define str_clone(str) __string_clone(str)
+#define str_substr(str, index, num_chars) __string_substr(str, index, num_chars)
 #define str_find(str, substr) __string_find_from(str, substr, 0)
 #define str_find_char(str, chr) __string_find_char_from(str, chr, 0)
 #define str_find_from(str, substr, index) __string_find_from(str, substr, index)

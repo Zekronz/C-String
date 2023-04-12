@@ -3,6 +3,8 @@
     str.c
     Copyright (c) 2023 Zekronz - MIT License
 
+    https://github.com/Zekronz/C-String
+
 */
 
 #include <stdlib.h>
@@ -317,6 +319,21 @@ int __string_fill_range(string _str, size_t _index, size_t _num_chars, char _chr
     return 1;
 }
 
+string __string_clone(string _str){
+    if(_str == NULL) return NULL;
+
+    __string* str = __string_struct(_str);
+    __string* new_str = (__string*)malloc(sizeof(__string) + str->cap);
+    if(new_str == NULL) return NULL;
+
+    new_str->cap = str->cap;
+    new_str->len = str->len;
+
+    for(size_t i = 0; i < new_str->len + 1; ++i) new_str->data[i] = _str[i];
+
+    return (string)(&new_str->data);
+}
+
 string __string_substr(string _str, size_t _index, size_t _num_chars){
     if(_str == NULL || _num_chars == 0) return NULL;
 
@@ -335,21 +352,6 @@ string __string_substr(string _str, size_t _index, size_t _num_chars){
     substr->data[_num_chars] = '\0';
 
     return (string)(&substr->data);
-}
-
-string __string_clone(string _str){
-    if(_str == NULL) return NULL;
-
-    __string* str = __string_struct(_str);
-    __string* new_str = (__string*)malloc(sizeof(__string) + str->cap);
-    if(new_str == NULL) return NULL;
-
-    new_str->cap = str->cap;
-    new_str->len = str->len;
-
-    for(size_t i = 0; i < new_str->len + 1; ++i) new_str->data[i] = _str[i];
-
-    return (string)(&new_str->data);
 }
 
 int __string_find_from(string _str, char* _substr, size_t _index){
