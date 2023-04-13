@@ -33,7 +33,7 @@ str_set(str, 1, 'A');
 Adding/removing characters:
 ```c
 str_add(str, "Hello"); // Appends "Hello" to the end of the string.
-str_add(str1, str2); // Appends str2 at the end of str1.
+str_add(str1, str2); // Appends str2 to the end of str1.
 str_insert(str, 4, "Hello"); // Inserts "Hello" at index 4 of the string.
 str_delete(str, 4, 5); // Removes 5 characters from the string, starting from index 4.
 str_clear(str); // Clears the entire string and sets its length to 0.
