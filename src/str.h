@@ -55,7 +55,7 @@ int __string_resize(string* _str, size_t _num_chars);
 int __string_reserve(string* _str, size_t _num_chars);
 int __string_shrink(string* _str);
 
-#define str_create(str) __string_create()
+#define str_create() __string_create()
 #define str_create_from_str(str) __string_create_from_string(str)
 #define str_free(str) __string_free(str)
 #define str_length(str) __string_length(str)
